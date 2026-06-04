@@ -3,7 +3,7 @@ import React from 'react'
 const Contacts = () => {
   return (
     <div className='p-8 max-w-xl mx-auto'>
-        <h2 className='text-3xl font-bold mb-4'>Contact Me</h2>
+        <h2 className='text-3xl font-bold mb-4'>Contact Me (Via Email)</h2>
 
         <form className='space-y-4'>
             <input className='w-full p-2 border' placeholder='Name'/>

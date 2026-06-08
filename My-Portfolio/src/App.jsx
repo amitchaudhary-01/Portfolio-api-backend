@@ -9,7 +9,11 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Contacts from "./pages/Contacts";
+
 import Loaderscreen from "./Components/Loaderscreen";
+// import { Product } from "../../Backend/schema/product";
+import Products from "./Pages/Products";
+import Users from "./Pages/Users";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -38,8 +42,14 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/contacts" element={<Contacts />} />
+            <Route path="/products" element={<Products/>}/>
+            <Route path="/users" element={<Users/>}/>
           </Routes>
         </main>
+        <div className="flex gap-190">
+        <Users/>
+        <Products/>
+        </div>
 
         <Footer />
       </div>

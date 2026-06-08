@@ -4,10 +4,15 @@ import mongoose from "mongoose";
 import dbConnect from "./config/db.js";
 import { Product } from "./schema/product.js";
 import { User } from "./schema/users.js";
+import { Test } from "./schema/test.js";
+import { userCreate } from "./controller/user.controller.js";
+import { productCreate } from "./controller/product.controller.js";
+
 
 const app = express();
 
 app.use(cors());
+app.use(express.json())
 
 dbConnect();
 
@@ -46,64 +51,38 @@ app.get("/projects", (req, res) => {
 });
 
 
-////////////user data created and show error if occurance
-app.get("/add",async(req,res)=>{
+app.get("/test",async(req,res)=>{
   try {
-     const user= await User.create({
-    firstname:"Amit",
-    lastname:"Chaudhary",
-    contact:9888888888,
-    email:"ac984939@gmail.com",
-    age:23,
-    gender:"male",
-    username:"Amit-chy",
-    password:"@mit",
-    bloodgroup:"AB+",
-    height:5,
-    weight:70,
-    address:"Nawalparasi"
-  })
-  res.status(200).json({
-    message:"user created sucessfully",
-    data:user
-  })
+    
+    const {caption,image} = req.body
+
+    const test = await Test.create({
+      caption,
+      image
+    })
+
+
+    res.status(200).json({
+      message:"test created sucessfully",
+      data:test
+    })
+    
   } catch (error) {
-    res.status(404).json({
-      message:"404 Error",
+    res.status(500).json({
+      message:" server cerror"
     })
     
   }
-
 })
+
+
+////////////user data created and show error if occurance
+app.get("/add",userCreate)
 
 ////////////product data created and show error if happens
-app.get("/reg",async(req,res)=>{
-try {
-  const product = await Product.create({
-  title:"hero amit",
-  price:17,
-  category:"Fashion",
-  description:"Tshirt",
-  stock:17,
-  rating:3,
-  brand:"Nike",
-  review:"Good for exercise",
-  discountpercentage:50,
-  tag:"@nike"
-})
+app.get("/reg",productCreate)
 
-res.status(200).json({
-  message:"Product data created successfully",
-  data:product
-})
-  
-} catch (error) {
-  res.status(500).json({
-    message:"Server Crashed",
-  })
-}
 
-})
 
 ///////get user data from database
 app.get("/getuser",async(req,res)=>{
@@ -136,6 +115,26 @@ app.get("/getproduct",async(req,res)=>{
      res.status(500).json({
     message:"Server Crashed",
   })
+  }
+})
+
+
+
+
+app.get("/gettest",async(req,res)=>{
+  try {
+    const testData = await Test.find();
+
+  res.status(200).json({
+   message:"test data in database",
+   data:testData
+})
+    
+  } catch (error) {
+    res.status(500).json({
+    message:"Server Crashed",
+  })
+    
   }
 })
 

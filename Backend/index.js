@@ -5,10 +5,8 @@ import dbConnect from "./config/db.js";
 import { Product } from "./schema/product.js";
 import { User } from "./schema/users.js";
 import { Test } from "./schema/test.js";
-import { userCreate } from "./controller/user.controller.js";
-import { productCreate } from "./controller/product.controller.js";
-
-
+import { getUser, userCreate, getUserbyId, updateUser } from "./controller/user.controller.js";
+import { getProduct, getProductById, productCreate, updateProduct } from "./controller/product.controller.js";
 const app = express();
 
 app.use(cors());
@@ -83,40 +81,23 @@ app.get("/add",userCreate)
 app.get("/reg",productCreate)
 
 
+app.get("/getproduct",getProduct)
+
+app.get("/getproduct/:id",getProductById)
+
+app.get("/productupdate/:id",updateProduct)
+
+
+
 
 ///////get user data from database
-app.get("/getuser",async(req,res)=>{
-  try {
-const userData = await User.find();
+app.get("/getuser",getUser)
 
-res.status(200).json({
-  message:"user data",
-  data:userData
-})
-    
-  } catch (error) {
-    res.status(500).json({
-    message:"Server Crashed",
-  })
-    
-  }
-})
+app.get("/getuser/:id",getUserbyId)
 
-app.get("/getproduct",async(req,res)=>{
-  try {
-    const productData = await Product.find();
+app.get("/userupdate/:id",updateUser)
 
-    res.status(200).json({
-      message:"Product data get from database",
-      data:productData
-    })
-    
-  } catch (error) {
-     res.status(500).json({
-    message:"Server Crashed",
-  })
-  }
-})
+
 
 
 

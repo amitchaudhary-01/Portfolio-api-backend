@@ -5,11 +5,16 @@ import dbConnect from "./config/db.js";
 import { Product } from "./schema/product.js";
 import { User } from "./schema/users.js";
 import { Test } from "./schema/test.js";
-import { getUser, userCreate, getUserbyId, updateUser } from "./controller/user.controller.js";
+import { getUser, userCreate, getUserbyId, updateUser, deleteUser } from "./controller/user.controller.js";
 import { getProduct, getProductById, productCreate, updateProduct } from "./controller/product.controller.js";
+import { formCreate } from "./controller/userform.controller.js";
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 app.use(express.json())
 
 dbConnect();
@@ -91,11 +96,13 @@ app.get("/productupdate/:id",updateProduct)
 
 
 ///////get user data from database
-app.get("/getuser",getUser)
+app.get("/getusers",getUser)
 
 app.get("/getuser/:id",getUserbyId)
 
 app.get("/userupdate/:id",updateUser)
+
+app.get("/deleteuser/:id",deleteUser)
 
 
 
@@ -118,6 +125,10 @@ app.get("/gettest",async(req,res)=>{
     
   }
 })
+
+
+
+app.post("/getform",formCreate)
 
 
 

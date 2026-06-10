@@ -14,6 +14,7 @@ import Loaderscreen from "./Components/Loaderscreen";
 // import { Product } from "../../Backend/schema/product";
 import Products from "./Pages/Products";
 import Users from "./Pages/Users";
+import Form from "./Pages/Form";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -44,12 +45,15 @@ function App() {
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/products" element={<Products/>}/>
             <Route path="/users" element={<Users/>}/>
+            <Route path="/register" element={<Form/>}/>
           </Routes>
         </main>
-        <div className="flex gap-190">
+        {/* <div className="flex gap-190">
         <Users/>
         <Products/>
-        </div>
+        </div> */}
+
+        
 
         <Footer />
       </div>

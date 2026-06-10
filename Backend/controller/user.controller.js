@@ -38,8 +38,6 @@ export const updateUser = async (req,res)=>{
     try {
         
         const {id} = req.params
-        // const req = req.body
-
         const userdata = await User.findByIdAndUpdate(
             id,
             req.body,
@@ -49,16 +47,34 @@ export const updateUser = async (req,res)=>{
             message:"user updated sucessfully",
             data:userdata
         })
-
     } catch (error) {
         res.status(500).json({
             message:"Server Crash"
-        })
-        
-        
+        })   
     }
 }
 
+
+export const deleteUser = async(req,res)=>{
+    try {
+        const {id} = req.params
+
+        const userData = await User.findByIdAndDelete(
+            id
+        )
+
+        res.status(200).json({
+            message:"Delete successfully",
+            data:userData
+        })
+        
+    } catch (error) {
+        res.status(500).json({
+            message:"Server Error"
+        })
+        
+    }
+}
 
 
 export const getUser = async(req,res)=>{

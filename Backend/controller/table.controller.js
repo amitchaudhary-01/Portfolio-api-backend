@@ -1,0 +1,100 @@
+import { Table } from "../schema/table.js";
+
+export const tableCreate = async(req,res)=>{
+    try {
+
+        const{name, description, category, thumbnail, item } = req.body
+
+        if(!name|| !description || !category|| !thumbnail|| !item ){
+            return res.status(404).json({
+                message:"Data are missing"
+            })
+        }
+        const data= await Table.create({
+            name,
+            description, 
+            category,
+            thumbnail,
+            item
+        })
+        res.status(200).json({
+            message:"Table Created Successfully",
+            data:data
+        })   
+    } catch (error) {
+        res.status(500).json({
+            message:"Server Error"
+        })
+        console.log(error)
+    }
+}
+
+export const getTable = async(req,res)=>{
+    try {
+        const tableData = await Table.find()
+
+        res.status(200).json({
+            message:"Data Get Successfully",
+            data:tableData
+        })
+    } catch (error) {
+        res.status(500).json({
+            message:"Server ERror"
+        })
+        
+    }
+}
+
+export const getTablebyId = async(req,res)=>{
+
+    try {
+        const {id}= req.params
+
+        const data = await Table.findById(id)
+
+        res.status(200).json({
+            message:"Get user Data",
+            data:data
+        })
+    } catch (error) {
+        res.status(500).json({
+            message:"Server Error"
+        })
+        
+    }
+}
+
+export const updateTable = async(req,res)=>{
+    try {
+        const {id} = req.params
+        const data = await Table.findByIdAndUpdate(id,req.body,{new:true})
+
+        res.status(200).json({
+            message:"Get Single Table DAta",
+            data:data
+        })
+    } catch (error) {
+        res.status(500).json({
+            message:'Server ERror'
+        })
+        
+    }
+}
+
+export const deleteTable = async(req,res)=>{
+    try {
+        const {id} = req.params
+
+        const data = await Table.findByIdAndDelete(id)
+
+        res.status(200).json({
+            message:"Delete Successfully",
+            data:data
+        })
+    } catch (error) {
+        res.status(500).json({
+            message:"Server ERRor"
+        })
+        
+    }
+}

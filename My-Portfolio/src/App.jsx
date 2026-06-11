@@ -15,6 +15,7 @@ import Loaderscreen from "./Components/Loaderscreen";
 import Products from "./Pages/Products";
 import Users from "./Pages/Users";
 import Form from "./Pages/Form";
+import Table from "./Pages/Table";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -53,7 +54,7 @@ function App() {
         <Products/>
         </div> */}
 
-        
+        <Table/>
 
         <Footer />
       </div>

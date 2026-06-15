@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 import {useForm} from "react-hook-form"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify";
 
 const Form = () => {
     const {
@@ -14,10 +15,11 @@ const navigate = useNavigate()
 const onSubmit = async(data)=>{
     try {
         const res = await axios.post("http://localhost:2001/getform",data)
-        alert("Registered Successfully")
+        toast.success("Registered Successfully")
         navigate("/")
     } catch (error) {
-        console.log(error)  
+        console.log(error)
+        toast.error("Invalid Criteria")  
     }
 }
   

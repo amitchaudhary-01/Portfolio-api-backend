@@ -10,7 +10,9 @@ const Navbar = () => {
     // })
   return (
    
-        <nav className='bg-orange-400 shadow-md p-4 flex justify-between items-center'>
+
+    // <nav className="p-4 shadow-md flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-blue-800 via-blue-600 to-blue-400"> 
+         <nav className='bg-orange-400 shadow-md p-4 flex justify-between items-center'>
             <h1 className='text-xl font-bold'>My Portfolio</h1>
 
             {/* <div className='flex justify-center items-center gap-2  h-20 w-full bg-blue-100'>

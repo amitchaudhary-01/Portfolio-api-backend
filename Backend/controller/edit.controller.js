@@ -43,3 +43,34 @@ export const getEdit = async(req,res)=>{
         
     }
 }
+
+export const getEditbyId = async(req,res)=>{
+    try {
+        const {id} = req.params
+        const data = await Edit.findById(id)
+        res.status(200).json({
+            message:"edit data of id",
+            data: data
+        })
+    } catch (error) {
+        res.status(500).json({
+            message:"server Error"
+        })
+    }
+}
+
+export const updateEdit = async(req,res)=>{
+    try {
+        const {id} = req.params
+        const data = await Edit.findByIdAndUpdate(id, req.body, {new:true})
+
+        res.status(200).json({
+            message:"updated successfully",
+            data:data
+        })
+    } catch (error) {
+      res.status(500).json({
+        message:"Server Error"
+      })  
+    }
+}

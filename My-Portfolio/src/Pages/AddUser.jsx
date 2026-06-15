@@ -2,7 +2,7 @@ import React from "react";
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import {Link, useNavigate} from "react-router-dom"
-
+import { toast } from "react-toastify";
 
 
 const AddUser = () => {
@@ -18,10 +18,11 @@ const {
 const onSubmit = async(data)=>{
     try {
         const res = await axios.post("http://localhost:2001/table",data)
-        alert("Registered Successfully")
+        toast.success("Registered Successfully")
         navigate("/table")
     } catch (error) {
         console.log(error)
+        toast.error("Invalid detail")
     }
 }
 

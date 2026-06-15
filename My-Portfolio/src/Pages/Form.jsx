@@ -1,16 +1,21 @@
 import axios from "axios";
 import React from "react";
 import {useForm} from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+
 const Form = () => {
     const {
     register,
     handleSubmit,
   } = useForm();
 
+const navigate = useNavigate()
+
 const onSubmit = async(data)=>{
     try {
         const res = await axios.post("http://localhost:2001/getform",data)
         alert("Registered Successfully")
+        navigate("/")
     } catch (error) {
         console.log(error)  
     }
@@ -30,8 +35,7 @@ const onSubmit = async(data)=>{
             <label className="block text-gray-700 font-medium mb-1">
               First Name
             </label>
-            <input
-              type="text"
+            <input type="text"
               {...register('firstname')}
               placeholder="Enter First Name"
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"

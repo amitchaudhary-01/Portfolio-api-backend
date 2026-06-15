@@ -3,19 +3,22 @@ import { Table } from "../schema/table.js";
 export const tableCreate = async(req,res)=>{
     try {
 
-        const{name, description, category, thumbnail, item } = req.body
+        const{firstname, middlename, lastname, dateofbirth, gender, emailaddress, address} = req.body
 
-        if(!name|| !description || !category|| !thumbnail|| !item ){
+        if(!firstname|| !middlename || !lastname|| !dateofbirth|| !gender || !emailaddress || !address  ){
             return res.status(404).json({
                 message:"Data are missing"
             })
         }
         const data= await Table.create({
-            name,
-            description, 
-            category,
-            thumbnail,
-            item
+            firstname,
+            middlename, 
+            lastname,
+            dateofbirth,
+            gender,
+            emailaddress,
+            address
+           
         })
         res.status(200).json({
             message:"Table Created Successfully",

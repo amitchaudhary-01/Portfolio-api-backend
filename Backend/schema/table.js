@@ -1,23 +1,31 @@
 import mongoose from "mongoose";
 
 const tableSchema = new mongoose.Schema({
-    name:{
+    firstname:{
         required:true,
         type:String
     },
-    description:{
+    middlename:{
         required:true,
         type:String
     },
-    category:{
+    lastname:{
         required:true,
         type:String
     },
-    thumbnail:{
+    dateofbirth:{
         required:true,
         type:String
     },
-    item:{
+    gender:{
+        required:true,
+        type:String
+    },
+    emailaddress:{
+        required:true,
+        type:String
+    },
+    address:{
         required:true,
         type:String
     }

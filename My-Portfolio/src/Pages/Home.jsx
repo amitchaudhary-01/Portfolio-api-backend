@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import {Link} from "react-router-dom"
 
 const Home = () => {
   const navigate = useNavigate();
@@ -14,8 +15,7 @@ const Home = () => {
           initial={{ opacity: 0, y: 40, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-center z-10 px-4"
-        >
+          className="text-center z-10 px-4">
 
           {/* Title */}
           <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-blue-400 via-orange-400 to-green-400 text-transparent bg-clip-text">
@@ -34,24 +34,25 @@ const Home = () => {
           <div className="mt-10 flex gap-4 justify-center flex-wrap">
 
             {/* WORKING BUTTON */}
-            <motion.button whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/projects")}
-              className="px-8 py-3 rounded-full border border-white/20 text-white backdrop-blur-md hover:bg-white/10 transition"
-            >
-              Explore Work
-            </motion.button>
+            
 
-            {/* OPTIONAL CONTACT */}
-            <motion.button whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}
-              onClick={() => navigate("/contacts")}
-              className="px-8 py-3 rounded-full border border-white/20 text-white backdrop-blur-md hover:bg-white/10 transition"
-            >
-              Contact Me
-            </motion.button>
+            <Link to='/projects' className="px-8 py-3 rounded-full border border-white/20 text-white backdrop-blur-md hover:bg-white/10 transition"
+            >Explore Work</Link>
+
+           
+           
+
+            <Link to="/contacts"  className="px-8 py-3 rounded-full border border-white/20 text-white backdrop-blur-md hover:bg-white/10 transition">Contact</Link>
 
           </div>
 
+          
+
+            <Link to="/adduser" className="px-8 py-3 rounded-full border border-white/20 text-white backdrop-blur-md hover:bg-white/10 transition mt-7">Add User</Link>
+
         </motion.div>
+
+
 
       </section>
     </div>

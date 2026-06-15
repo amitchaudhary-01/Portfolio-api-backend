@@ -16,6 +16,8 @@ import Products from "./Pages/Products";
 import Users from "./Pages/Users";
 import Form from "./Pages/Form";
 import Table from "./Pages/Table";
+import AddUser from "./Pages/AddUser";
+import Edit from "./Pages/Edit";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -47,6 +49,9 @@ function App() {
             <Route path="/products" element={<Products/>}/>
             <Route path="/users" element={<Users/>}/>
             <Route path="/register" element={<Form/>}/>
+            <Route path="/adduser" element={<AddUser/>}/>
+            <Route path="/table" element={<Table/>}/>
+            <Route path="/edit" element={<Edit/>}/>
           </Routes>
         </main>
         {/* <div className="flex gap-190">
@@ -54,7 +59,7 @@ function App() {
         <Products/>
         </div> */}
 
-        <Table/>
+     
 
         <Footer />
       </div>

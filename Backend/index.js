@@ -9,6 +9,7 @@ import { getUser, userCreate, getUserbyId, updateUser, deleteUser } from "./cont
 import { getProduct, getProductById, productCreate, updateProduct } from "./controller/product.controller.js";
 import { formCreate } from "./controller/userform.controller.js";
 import { deleteTable, getTable, getTablebyId, tableCreate, updateTable } from "./controller/table.controller.js";
+import { editCreate } from "./controller/edit.controller.js";
 const app = express();
 
 app.use(
@@ -131,15 +132,21 @@ app.get("/gettest",async(req,res)=>{
 
 app.post("/getform",formCreate)
 
+
+
 app.post("/table",tableCreate)
 
-app.post("/gettable",getTable)
+app.get("/gettable",getTable)
 
 app.get("/gettable/:id",getTablebyId)
 
 app.get("/updatetable/:id",updateTable)
 
 app.get("/deletetable/:id",deleteTable)
+
+
+
+app.post("/edit",editCreate)
 
 
 

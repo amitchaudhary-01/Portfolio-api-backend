@@ -1,155 +1,119 @@
 import express from "express";
 import cors from "cors";
-import mongoose from "mongoose";
 import dbConnect from "./config/db.js";
-import { Product } from "./schema/product.js";
-import { User } from "./schema/users.js";
-import { Test } from "./schema/test.js";
+
+// Controllers
 import { getUser, userCreate, getUserbyId, updateUser, deleteUser } from "./controller/user.controller.js";
 import { getProduct, getProductById, productCreate, updateProduct } from "./controller/product.controller.js";
 import { formCreate } from "./controller/userform.controller.js";
 import { deleteTable, getTable, getTablebyId, tableCreate, updateTable } from "./controller/table.controller.js";
-import { editCreate } from "./controller/edit.controller.js";
+import { editCreate, getEdit, getEditbyId, updateEdit } from "./controller/edit.controller.js";
+
+// Test schema (if needed directly here)
+import { Test } from "./schema/test.js";
+
 const app = express();
 
+// Middleware
 app.use(
   cors({
     origin: "http://localhost:5173",
   })
 );
-app.use(express.json())
+app.use(express.json());
 
+// Connect Database
 dbConnect();
 
-app.get("/",(req,res)=>{
-  res.send("Data is integrated to schema mongodb/ test/ user ")
-})
+// Base Route
+app.get("/", (req, res) => {
+  res.send("Data is integrated to schema mongodb/ test/ user ");
+});
 
-
+// Projects Static Route
 app.get("/projects", (req, res) => {
   res.json([
-    {
-      id: 1,
-      name: "Kapda",
-      category: "Fashion Shop",
-      link: "https://kapda-phi.vercel.app/",
-    },
-    {
-      id: 2,
-      name: "Movie Search",
-      category: "Entertainment",
-      link: "https://movie-search-application-xi.vercel.app/",
-    },
-    {
-      id: 3,
-      name: "Product Table",
-      category: "Dynamic Routing",
-      link: "https://product-table-with-dynamic-routing.vercel.app/",
-    },
-    {
-      id: 4,
-      name: "Joke Generator",
-      category: "Funny and entertainment",
-      link: "https://joke-eosin-delta.vercel.app/",
-    },
+    { id: 1, name: "Kapda", category: "Fashion Shop", link: "https://kapda-phi.vercel.app/" },
+    { id: 2, name: "Movie Search", category: "Entertainment", link: "https://movie-search-application-xi.vercel.app/" },
+    { id: 3, name: "Product Table", category: "Dynamic Routing", link: "https://product-table-with-dynamic-routing.vercel.app/" },
+    { id: 4, name: "Joke Generator", category: "Funny and entertainment", link: "https://joke-eosin-delta.vercel.app/" },
   ]);
 });
 
-
-app.get("/test",async(req,res)=>{
+/* ==========================================================
+   TEST ROUTES
+   ========================================================== */
+// FIXED: Changed from .get to .post since it creates data using req.body
+app.post("/test", async (req, res) => {
   try {
-    
-    const {caption,image} = req.body
-
-    const test = await Test.create({
-      caption,
-      image
-    })
-
-
-    res.status(200).json({
-      message:"test created sucessfully",
-      data:test
-    })
-    
+    const { caption, image } = req.body;
+    const test = await Test.create({ caption, image });
+    res.status(200).json({ 
+      message: "test created successfully", data: test });
   } catch (error) {
-    res.status(500).json({
-      message:" server cerror"
-    })
-    
+    res.status(500).json({ 
+      message: "server error" });
   }
-})
+});
 
-
-////////////user data created and show error if occurance
-app.get("/add",userCreate)
-
-////////////product data created and show error if happens
-app.get("/reg",productCreate)
-
-
-app.get("/getproduct",getProduct)
-
-app.get("/getproduct/:id",getProductById)
-
-app.get("/productupdate/:id",updateProduct)
-
-
-
-
-///////get user data from database
-app.get("/getusers",getUser)
-
-app.get("/getuser/:id",getUserbyId)
-
-app.get("/userupdate/:id",updateUser)
-
-app.get("/deleteuser/:id",deleteUser)
-
-
-
-
-
-
-app.get("/gettest",async(req,res)=>{
+app.get("/gettest", async (req, res) => {
   try {
     const testData = await Test.find();
-
-  res.status(200).json({
-   message:"test data in database",
-   data:testData
-})
-    
+    res.status(200).json({ 
+      message: "test data in database", 
+      data: testData });
   } catch (error) {
-    res.status(500).json({
-    message:"Server Crashed",
-  })
-    
+    res.status(500).json({ 
+      message: "Server Crashed" });
   }
-})
+});
 
+/* ==========================================================
+   USER & PRODUCT CREATION ROUTES
+   ========================================================== */
+// FIXED: Changed from .get to .post to correctly accept req.body payload
+app.post("/add", userCreate);
+app.post("/reg", productCreate);
 
+/* ==========================================================
+   PRODUCT MANAGEMENT ROUTES
+   ========================================================== */
+app.get("/getproduct", getProduct);
+app.get("/getproduct/:id", getProductById);
+// FIXED: Changed from .get to .put for resource update
+app.put("/productupdate/:id", updateProduct);
 
-app.post("/getform",formCreate)
+/* ==========================================================
+   USER MANAGEMENT ROUTES
+   ========================================================== */
+app.get("/getusers", getUser);
+app.get("/getuser/:id", getUserbyId);
+// FIXED: Changed from .get to .put for resource update
+app.put("/userupdate/:id", updateUser);
+// FIXED: Changed from .get to .delete for cleaner semantics
+app.delete("/deleteuser/:id", deleteUser);
 
+/* ==========================================================
+   FORM & TABLE ROUTES
+   ========================================================== */
+app.post("/getform", formCreate);
 
+app.post("/table", tableCreate);
+app.get("/gettable", getTable);
+app.get("/gettable/:id", getTablebyId);
+app.put("/updatetable/:id", updateTable);
+app.delete("/deletetable/:id", deleteTable);
 
-app.post("/table",tableCreate)
+/* ==========================================================
+   EDIT ROUTES
+   ========================================================== */
+app.post("/edit", editCreate);
+app.get("/getedit", getEdit);
+app.get("/getedit/:id", getEditbyId);
+// FIXED: Changed from .get to .put for updates
+app.put("/updateedit/:id", updateEdit);
 
-app.get("/gettable",getTable)
-
-app.get("/gettable/:id",getTablebyId)
-
-app.get("/updatetable/:id",updateTable)
-
-app.get("/deletetable/:id",deleteTable)
-
-
-
-app.post("/edit",editCreate)
-
-
-
+// Run Server
 app.listen(2001, () => {
   console.log("Server running on http://localhost:2001");
 });

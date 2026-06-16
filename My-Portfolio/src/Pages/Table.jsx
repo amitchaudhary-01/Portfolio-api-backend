@@ -4,24 +4,41 @@ import { ArrowDownToLine } from 'lucide-react';
 import { Trash } from 'lucide-react';
 import { SquarePen } from 'lucide-react';
 import {Link} from "react-router-dom"
+import { toast } from "react-toastify";
+
 
 const Table = () => {
 
   const [data,setData] =useState([])
 
 
-  const fetchData = async()=>{
-    try {
+  const fetchData = async () => {
+  try {
+    const res = await axios.get("http://localhost:2001/gettable");
 
-      const res = await axios.get("http://localhost:2001/gettable")
+    console.log("API Response:", res.data);
 
-      setData(res.data.data)
-    } catch (error) {
-      console.log(error)
-    }
+    setData(res.data.data);
+  } catch (error) {
+    console.log(error);
   }
+};
   useEffect(()=>{
     fetchData()
+  },[])
+
+
+  const deleteUser = async (id) => {
+  try {
+    await axios.delete(`http://localhost:2001/deletetable/${id}`);
+    toast.success("Deleted successfully");
+    fetchData();
+  } catch (error) {
+    console.log(error);
+  }
+};
+  useEffect(()=>{
+fetchData()
   },[])
 
 
@@ -61,8 +78,10 @@ const Table = () => {
             <td>
                 <p className="flex">
                   <ArrowDownToLine/>
-                    <Trash />
+                  <button onClick={() => deleteUser(value._id)}>  <Trash  /></button>
+                    <Link to={`/edit/${value._id}`}>
                       <SquarePen />
+                      </Link>
                       </p>
               </td>
 

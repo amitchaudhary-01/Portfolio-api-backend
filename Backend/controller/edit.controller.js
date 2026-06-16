@@ -1,76 +1,92 @@
 import { Edit } from "../schema/edit.js";
 
-export const editCreate = async(req,res)=>{
+export const editCreate = async (req, res) => {
     try {
-        const{data, confirmdata} = req.data
+        // 1. Fixed: Changed req.data to req.body
+        const { firstname, middlename, lastname, gender, dateofbirth, emailaddress, address } = req.body;
 
-        if(!data || !confirmdata){
-           return res.status(404).json({
-                message:"data missing"
-            })
-            const data = await Edit.create({
-                data,
-                confirmdata
-            })
-
-            res.status(200).json({
-                message:"Data Change Successfully",
-                data:data
-            })
+        // 2. Validation check
+        if (!firstname || !middlename || !lastname || !gender || !dateofbirth || !emailaddress || !address) {
+            return res.status(400).json({ // Changed status to 400 (Bad Request)
+                message: "Data missing"
+            });
         }
+
+        // 3. Fixed: Moved database creation OUTSIDE the error conditional and passed correct variables
+        const newEdit = await Edit.create({
+            firstname,
+            middlename,
+            lastname,
+            gender,
+            dateofbirth,
+            emailaddress,
+            address
+        });
+
+        // 4. Send successful response
+        return res.status(200).json({
+            message: "Data Changed Successfully",
+            data: newEdit
+        });
+
     } catch (error) {
-        res.status(500).json({
-            message:"Server Error"
-        })
-         console.log(error)
+        console.error("Error in editCreate:", error);
+        return res.status(500).json({
+            message: "Server Error"
+        });
     }
-}
+};
 
-
-export const getEdit = async(req,res)=>{
+export const getEdit = async (req, res) => {
     try {
-        const editData = await Edit.find()
-
-        res.status(200).json({
-            message:"data edit successfully",
-            data:editData
-
-        })
+        const editData = await Edit.find();
+        return res.status(200).json({
+            message: "Data retrieved successfully",
+            data: editData
+        });
     } catch (error) {
-        res.status(500).json({
-            message:"Server Error"
-        })
+        console.error("Error in getEdit:", error);
+        return res.status(500).json({
+            message: "Server Error"
+        });
+    }
+};
+
+export const getEditbyId = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const data = await Edit.findById(id);
         
-    }
-}
+        if (!data) {
+            return res.status(404).json({ 
+                message: "Record not found" });
+        }
 
-export const getEditbyId = async(req,res)=>{
-    try {
-        const {id} = req.params
-        const data = await Edit.findById(id)
-        res.status(200).json({
-            message:"edit data of id",
+        return res.status(200).json({
+            message: "Edit data of id fetched",
             data: data
-        })
+        });
     } catch (error) {
-        res.status(500).json({
-            message:"server Error"
-        })
+        console.error("Error in getEditbyId:", error);
+        return res.status(500).json({
+            message: "Server Error"
+        });
     }
-}
+};
 
 export const updateEdit = async(req,res)=>{
     try {
         const {id} = req.params
-        const data = await Edit.findByIdAndUpdate(id, req.body, {new:true})
+        const data = await Table.findByIdAndUpdate(id,req.body,{new:true})
 
         res.status(200).json({
-            message:"updated successfully",
+            message:"Edit Single DAta",
             data:data
         })
     } catch (error) {
-      res.status(500).json({
-        message:"Server Error"
-      })  
+        res.status(500).json({
+            message:'Server ERror'
+        })
+        
     }
 }

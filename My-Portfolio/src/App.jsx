@@ -50,8 +50,9 @@ function App() {
             <Route path="/users" element={<Users/>}/>
             <Route path="/register" element={<Form/>}/>
             <Route path="/adduser" element={<AddUser/>}/>
-            <Route path="/table" element={<Table/>}/>
-            <Route path="/edit" element={<Edit/>}/>
+            <Route path="/table" element={<Table/>}/> 
+            <Route path="/edit/:id" element={<Edit/>}/>
+            {/* <Route path="/edit" element={<Edit/>}/> */}
           </Routes>
         </main>
         {/* <div className="flex gap-190">

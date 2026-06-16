@@ -1,11 +1,31 @@
 import mongoose from "mongoose";
 
 const editSchema = new mongoose.Schema({
-    data:{
+    firstname:{
         required:true,
         type:String
     },
-    confirmdata:{
+    middlename:{
+        required:true,
+        type:String
+    },
+    lastname:{
+        required:true,
+        type:String
+    },
+    gender:{
+        required:true,
+        type:String
+    },
+    dateofbirth:{
+        required:true,
+        type:String
+    },
+    emailaddress:{
+        required:true,
+        type:String
+    },
+    address:{
         required:true,
         type:String
     }

@@ -18,6 +18,9 @@ import Form from "./Pages/Form";
 import Table from "./Pages/Table";
 import AddUser from "./Pages/AddUser";
 import Edit from "./Pages/Edit";
+import Product_Table from "./Pages/Product_Table";
+import AddProduct from "./Pages/AddProduct";
+import ProductEdit from "./Pages/ProductEdit";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -52,6 +55,9 @@ function App() {
             <Route path="/adduser" element={<AddUser/>}/>
             <Route path="/table" element={<Table/>}/> 
             <Route path="/edit/:id" element={<Edit/>}/>
+            <Route path="/tableproduct" element={<Product_Table/>}/>
+            <Route path="/addproduct" element={<AddProduct/>}/>
+            <Route path="/productedit/:id" element={<ProductEdit/>}/>
             {/* <Route path="/edit" element={<Edit/>}/> */}
           </Routes>
         </main>

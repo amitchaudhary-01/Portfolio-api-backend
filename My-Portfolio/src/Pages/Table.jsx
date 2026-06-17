@@ -18,7 +18,7 @@ const Table = () => {
 
     console.log("API Response:", res.data);
 
-    setData(res.data.data);
+    setData(res.data.data);   
   } catch (error) {
     console.log(error);
   }
@@ -40,6 +40,37 @@ const Table = () => {
   useEffect(()=>{
 fetchData()
   },[])
+
+
+//   const downloadUserData = (user) => {
+//   try {
+//     // 1. Convert the user object into a clean string format
+//     const fileData = JSON.stringify(user, null, 2);
+    
+//     // 2. Create a Blob (Binary Large Object) containing the data
+//     const blob = new Blob([fileData], { type: "application/json" });
+    
+//     // 3. Create a hidden download link in memory
+//     const url = URL.createObjectURL(blob);
+//     const link = document.createElement("a");
+//     link.href = url;
+    
+//     // 4. Name the file dynamically using the user's name
+//     link.download = `${user.firstname || 'user'}_data.json`;
+    
+//     // 5. Trigger the download automatically and clean up
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+//     URL.revokeObjectURL(url);
+    
+//     toast.success("Download started!");
+//   } catch (error) {
+//     console.error("Download failed:", error);
+//     toast.error("Could not download file");
+//   }
+// };
+
 
 
   return (
@@ -67,7 +98,7 @@ fetchData()
             {
        data.map((value)=>{
         return (
-          <tr key={value.id}>
+          <tr key={value._id}>
             <td>{value.firstname}</td>
             <td>{value.middlename}</td>
             <td>{value.lastname}</td>
@@ -77,11 +108,15 @@ fetchData()
             <td>{value.address}</td>
             <td>
                 <p className="flex">
-                  <ArrowDownToLine/>
-                  <button onClick={() => deleteUser(value._id)}>  <Trash  /></button>
-                    <Link to={`/edit/${value._id}`}>
-                      <SquarePen />
-                      </Link>
+                  {/* <button onClick={() => downloadUserData(value)} className="text-black" title="Download Data">
+                          <ArrowDownToLine />
+                          </button> */}
+
+                          <ArrowDownToLine />
+
+                  <button onClick={() => deleteUser(value._id)} title="Delete Data">  <Trash  /></button>
+
+                    <Link to={`/edit/${value._id}`} title="Edit Data"><SquarePen />  </Link>
                       </p>
               </td>
 

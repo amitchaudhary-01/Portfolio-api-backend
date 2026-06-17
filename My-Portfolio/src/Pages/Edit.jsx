@@ -12,39 +12,84 @@ const [data,setData] = useState()
 const {id} = useParams()
 
 const {
-    register,
+    register, 
     handleSubmit,
-    reset
+    reset,
   } = useForm();
 
   const navigate = useNavigate()
-const fetchbyId = async () => {
+
+// const fetchbyId = async () => {
+//   try {
+//     const res = await axios.get(`http://localhost:2001/gettable/${id}`);
+
+//     console.log("API RESPONSE:", res.data);
+
+//     reset(res.data.data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+
+const fetchdata = async ()=>{
   try {
-    const res = await axios.get(`http://localhost:2001/gettable/${id}`);
-
-    console.log("API RESPONSE:", res.data);
-
-    reset(res.data);
+    const res = await axios.get(`http://localhost:2001/gettable/${id}`)
+    reset(res.data.data)
+    toast.success(res.data.message)
+    
+    
   } catch (error) {
+
     console.log(error);
+    
+    
   }
-};
+
+}
+
 useEffect(()=>{
-  fetchbyId()
+  fetchdata()
+
 },[id,reset])
+
+
+const onSubmit = async (data)=>{
+  try {
+    const res = await axios.put(`http://localhost:2001/updatetable/${id}`,data)
+    toast.success("user added sucessfully ")
+    navigate("/table")
+    
+  } catch (error) {
+
+    console.log(error);
+    toast.error("user not updated")
+    
+    
+  }
+
+}
+
+
+
+// useEffect(()=>{
+//   fetchbyId()
+// },[id,reset])
  
 
-const onSubmit = async (data) => {
-  try {
-    await axios.put(`http://localhost:2001/updatetable/${id}`, data);
 
-    toast.success("Updated Successfully");
-    navigate("/table");
-  } catch (error) {
-    console.log(error);
-    toast.error("Update Failed");
-  }
-};
+
+// const onSubmit = async (data) => {
+//   try {
+//     await axios.put(`http://localhost:2001/updatetable/${id}`, data);
+
+//     toast.success("Updated Successfully");
+//     navigate("/table");
+//   } catch (error) {
+//     console.log(error);
+//     toast.error("Update Failed");
+//   }
+// };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-100 to-green-300 flex items-center justify-center px-4 py-10">

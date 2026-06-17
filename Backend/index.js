@@ -12,6 +12,12 @@ import { editCreate, getEdit, getEditbyId, updateEdit } from "./controller/edit.
 // Test schema (if needed directly here)
 import { Test } from "./schema/test.js";
 
+//tableproduct controllers//
+import { deleteTableProduct, getTableProduct, getTableProductbyId, tableproductCreate, updateTableProduct } from "./controller/tableproduct.controller.js";
+
+/////multer middleware/////////////
+import { upload } from "./middlerware/multer.js";
+
 const app = express();
 
 // Middleware
@@ -113,7 +119,29 @@ app.get("/getedit/:id", getEditbyId);
 // FIXED: Changed from .get to .put for updates
 app.put("/updateedit/:id", updateEdit);
 
+
+/* ==========================================================
+   tableproduct ROUTES
+   ========================================================== */
+   app.post("/producttable",upload.single("image"),tableproductCreate)
+
+   app.get("/producttable",getTableProduct)
+
+   app.get("/producttable/:id",getTableProductbyId)
+
+   app.put("/producttable/:id",updateTableProduct)
+
+   app.delete("/producttable/:id",deleteTableProduct)
+  
+
+   
 // Run Server
 app.listen(2001, () => {
   console.log("Server running on http://localhost:2001");
 });
+
+
+
+
+
+

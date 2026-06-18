@@ -1,101 +1,210 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios"
-import { ArrowDownToLine } from 'lucide-react';
-import { Trash } from 'lucide-react';
-import { SquarePen } from 'lucide-react';
-import {Link} from "react-router-dom"
+import axios from "axios";
+import { ArrowDownToLine, Trash, SquarePen } from "lucide-react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-
 
 const Product_Table = () => {
 
-  const [data,setData] =useState([])
-
+  const [data, setData] = useState([]);
 
   const fetchData = async () => {
-  try {
-    const res = await axios.get("http://localhost:2001/producttable");
+    try {
+      const res = await axios.get(
+        "http://localhost:2001/producttable"
+      );
 
-    console.log("API Response:", res.data);
+      console.log(res.data);
 
-    setData(res.data.data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-  useEffect(()=>{
-    fetchData()
-  },[])
+      setData(res.data.data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
 
 
   const deleteTableProduct = async (id) => {
-  try {
-    const res = await axios.delete(`http://localhost:2001/producttable/${id}`);
-    toast.success("Deleted successfully");
-    fetchData();
-  } catch (error) {
-    console.log(error);
-  }
-};
-  useEffect(()=>{
-fetchData()
-  },[])
+
+    try {
+
+      await axios.delete(
+        `http://localhost:2001/producttable/${id}`
+      );
+
+      toast.success("Deleted successfully");
+
+      fetchData();
+
+    } catch (error) {
+      console.log(error);
+      toast.error("Delete failed");
+    }
+
+  };
+
 
   return (
+
     <div className="p-6">
-      
+
+      <div className="flex justify-end mb-5">
+
+        <Link
+          to="/addproduct"
+          className="bg-orange-400 hover:bg-orange-300 px-5 py-2 rounded"
+        >
+          Add Product
+        </Link>
+
+      </div>
+
+
       <div className="overflow-x-auto">
-        <table className="w-full border border-gray-300 shadow-lg rounded-lg overflow-hidden">
-          <thead className="bg-gray-500 text-white">
+
+        <table className="w-full border border-gray-300 shadow-lg">
+
+          <thead className="bg-gray-700 text-white">
+
             <tr>
-              <th className="px-4 py-3 text-left">Title</th>
-              <th className="px-4 py-3 text-left">Description</th>
-              <th className="px-4 py-3 text-left">Category</th>
-              <th className="px-4 py-3 text-left">Price</th>
-              <th className="px-4 py-3 text-left">Quantity</th>
-              <th className="px-4 py-3 text-left">Review</th>
-              
-              <th className="px-4 py-3 text-left">Action</th>
+
+              <th className="p-3">Title</th>
+              <th className="p-3">Description</th>
+              <th className="p-3">Category</th>
+              <th className="p-3">Price</th>
+              <th className="p-3">Quantity</th>
+              <th className="p-3">Image</th>
+              <th className="p-3">Review</th>
+              <th className="p-3">Action</th>
+
             </tr>
+
           </thead>
 
-         
 
 
           <tbody>
-            {
-       data.map((value)=>{
-        return (
-          <tr key={value._id}>
-            <td>{value.title}</td>
-            <td>{value.description}</td>
-            <td>{value.category}</td>
-            <td>{value.price}</td>
-            <td>{value.qty}</td>
-            <td>{value.review}</td>
-            
-            <td>
-                <p className="flex">
-                  
-                    <ArrowDownToLine />
 
-                  <button onClick={() => deleteTableProduct(value._id)} title="Delete Data">  <Trash  /></button>
 
-                    <Link to={`/productedit/${value._id}`} title="Edit Product Data"><SquarePen />  </Link>
-                      </p>
-              </td>
+          {
+            data.map((value)=>(
 
-          </tr>
-        )
-       })
-            }
+              <tr 
+                key={value._id}
+                className="border-b hover:bg-gray-100"
+              >
+
+                <td className="p-3">
+                  {value.title}
+                </td>
+
+
+                <td className="p-3">
+                  {value.description}
+                </td>
+
+
+                <td className="p-3">
+                  {value.category}
+                </td>
+
+
+                <td className="p-3">
+                  {value.price}
+                </td>
+
+
+                <td className="p-3">
+                  {value.qty}
+                </td>
+
+
+
+                <td className="p-3">
+
+                  <img
+                    src={`http://localhost:2001/uploads/${value.image}`}
+                    alt={value.title}
+                    className="w-16 h-16 object-cover rounded"
+                  />
+
+                </td>
+
+
+
+                <td className="p-3">
+                  {value.review}
+                </td>
+
+
+
+                <td className="p-3">
+
+                  <div className="flex gap-3">
+
+
+                    <ArrowDownToLine 
+                      className="cursor-pointer"
+                    />
+
+
+                    <button
+                      onClick={() =>
+                        deleteTableProduct(value._id)
+                      }
+                    >
+
+                      <Trash 
+                        className="text-red-500"
+                      />
+
+                    </button>
+
+
+
+                    <Link
+                      to={`/productedit/${value._id}`}
+                    >
+
+                      <SquarePen
+                        className="text-blue-500"
+                      />
+
+                    </Link>
+
+
+                  </div>
+
+
+                </td>
+
+
+              </tr>
+
+            ))
+          }
+
+
           </tbody>
+
+
         </table>
-              <Link to="/addproduct" className="border-2 bg-orange-300 hover:bg-orange-200 justify-end items-end">Add Product</Link>
+
 
       </div>
+
+
     </div>
+
   );
+
 };
+
 
 export default Product_Table;

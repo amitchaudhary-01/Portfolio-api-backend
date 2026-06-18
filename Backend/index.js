@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
 import dbConnect from "./config/db.js";
+import path from "path"
 
 // Controllers
 import { getUser, userCreate, getUserbyId, updateUser, deleteUser } from "./controller/user.controller.js";
 import { getProduct, getProductById, productCreate, updateProduct } from "./controller/product.controller.js";
-import { formCreate } from "./controller/userform.controller.js";
+import { userformCreate } from "./controller/userform.controller.js";
 import { deleteTable, getTable, getTablebyId, tableCreate, updateTable } from "./controller/table.controller.js";
 import { editCreate, getEdit, getEditbyId, updateEdit } from "./controller/edit.controller.js";
 
@@ -27,6 +28,8 @@ app.use(
   })
 );
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
+
 
 // Connect Database
 dbConnect();
@@ -102,12 +105,12 @@ app.delete("/deleteuser/:id", deleteUser);
 /* ==========================================================
    FORM & TABLE ROUTES
    ========================================================== */
-app.post("/getform", formCreate);
+app.post("/getform", userformCreate);
 
-app.post("/table", tableCreate);
+app.post("/table",upload.single("image"), tableCreate);
 app.get("/gettable", getTable);
 app.get("/gettable/:id", getTablebyId);
-app.put("/updatetable/:id", updateTable);
+app.put("/updatetable/:id",upload.single("image"), updateTable);
 app.delete("/deletetable/:id", deleteTable);
 
 /* ==========================================================
@@ -129,7 +132,7 @@ app.put("/updateedit/:id", updateEdit);
 
    app.get("/producttable/:id",getTableProductbyId)
 
-   app.put("/producttable/:id",updateTableProduct)
+   app.put("/producttable/:id",upload.single("image"),updateTableProduct)
 
    app.delete("/producttable/:id",deleteTableProduct)
   

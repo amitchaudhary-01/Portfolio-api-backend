@@ -86,6 +86,7 @@ fetchData()
               <th className="px-4 py-3 text-left">Date OF Birth</th>
               <th className="px-4 py-3 text-left">Gender</th>
               <th className="px-4 py-3 text-left">Email Address</th>
+              <th className="px-4 py-3 text-left">Image</th>
               <th className="px-4 py-3 text-left">Address</th>
               <th className="px-4 py-3 text-left">Action</th>
             </tr>
@@ -105,6 +106,9 @@ fetchData()
             <td>{value.dateofbirth}</td>
             <td>{value.gender}</td>
             <td>{value.emailaddress}</td>
+            <td className="p-3">
+            <img src={`http://localhost:2001/uploads/${value.image}`}alt={value.title}className="w-16 h-16 object-cover rounded"/> </td>
+
             <td>{value.address}</td>
             <td>
                 <p className="flex">

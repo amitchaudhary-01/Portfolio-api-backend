@@ -24,6 +24,10 @@ const tableproductSchema = new mongoose.Schema({
     review:{
         required:true,
         type:String
+    },
+    image:{
+        required:true,
+        type:String
     }
 })
 

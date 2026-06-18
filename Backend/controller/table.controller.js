@@ -5,11 +5,31 @@ export const tableCreate = async(req,res)=>{
 
         const{firstname, middlename, lastname, dateofbirth, gender, emailaddress, address} = req.body
 
+        const image = req.file.filename
+
         if(!firstname|| !middlename || !lastname|| !dateofbirth|| !gender || !emailaddress || !address  ){
             return res.status(404).json({
                 message:"Data are missing"
             })
         }
+
+
+if (!image)
+{
+     return res.status(404).json({
+                message:"Data are missing"
+            })
+}
+
+        // if(!req.file){
+        //     return res.status(400).json({
+        //         message:"Image missing"
+        //     })
+
+        // }
+
+
+
         const data= await Table.create({
             firstname,
             middlename, 
@@ -17,7 +37,8 @@ export const tableCreate = async(req,res)=>{
             dateofbirth,
             gender,
             emailaddress,
-            address
+            address,
+           image
            
         })
         res.status(200).json({

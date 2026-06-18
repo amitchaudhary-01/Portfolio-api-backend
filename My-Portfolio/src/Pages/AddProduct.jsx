@@ -11,30 +11,66 @@ const AddProduct = () => {
     handleSubmit,
     formState:{errors}
   } = useForm();
-
-
   const navigate = useNavigate();
 
+ const onSubmit = async(data)=>{
 
-  const onSubmit = async(data)=>{
+try{
 
-    try {
+const formData = new FormData();
 
-      await axios.post("http://localhost:2001/producttable",data);
+formData.append("title", data.title);
+formData.append("description", data.description);
+formData.append("price", data.price);
+formData.append("category", data.category);
+formData.append("qty", data.qty);
+formData.append("review", data.review);
 
-      toast.success("Product Added Successfully");
 
-      navigate("/tableproduct");
-
-
-    } catch(error){
-  console.log(error.response?.data);
-
-  toast.error(
-    error.response?.data?.message || "Something went wrong"
-  );
+if(data.image && data.image.length > 0){
+  formData.append("image", data.image[0]);
 }
-  };
+
+
+await axios.post("http://localhost:2001/producttable",
+ formData,
+ {
+  headers:{
+    "Content-Type":"multipart/form-data"
+  }
+ }
+);
+
+
+console.log(res.data);
+
+
+toast.success("Product Added Successfully");
+
+navigate("/tableproduct");
+
+
+}
+catch(error){
+
+console.log("FULL ERROR:", error);
+
+if(error.response){
+  console.log("SERVER RESPONSE:", error.response.data);
+}
+else if(error.request){
+  console.log("NO RESPONSE FROM SERVER");
+}
+else{
+  console.log("ERROR:", error.message);
+}
+
+
+toast.error("Something went wrong");
+
+}
+
+}
 
 
   return (
@@ -258,7 +294,35 @@ className="w-full border p-3 rounded-xl"
 </div>
 
 
+{/* Image */}
 
+<div>
+
+<label>Image</label>
+
+<input
+
+type="file"
+
+accept="image/*"
+
+{...register("image",{
+  required:"Image is required"
+})}
+
+className="w-full border p-3 rounded-xl"
+
+/>
+
+
+{
+errors.image &&
+<p className="text-red-500">
+{errors.image.message}
+</p>
+}
+
+</div>
 
 <div className="md:col-span-2">
 

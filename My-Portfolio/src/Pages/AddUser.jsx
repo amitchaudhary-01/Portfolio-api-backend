@@ -15,14 +15,47 @@ const AddUser = () => {
 
   const onSubmit = async (data) => {
     try {
+      const formData = new FormData();
+
+formData.append("firstname", data.firstname);
+formData.append("middlename", data.middlename);
+formData.append("lastname", data.lastname);
+formData.append("dateofbirth", data.dateofbirth);
+formData.append("gender", data.gender);
+formData.append("emailaddress", data.emailaddress);
+formData.append("address",data.address)
+
+
+if(data.image && data.image.length > 0){
+  formData.append("image", data.image[0]);
+}
+
+
+await axios.post("http://localhost:2001/table",
+ formData,
+ {
+  headers:{
+    "Content-Type":"multipart/form-data"
+  }
+ }
+);
+
+
+
+
+
       await axios.post("http://localhost:2001/table", data);
       toast.success("Registered Successfully");
       navigate("/table");
-    } catch (error) {
-      console.log(error);
-      toast.error("Invalid details");
     }
-  };
+    catch(error){
+    
+    console.log("FULL ERROR:", error);
+    
+    
+    
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-100 to-green-300 flex items-center justify-center px-4 py-10">
@@ -116,6 +149,20 @@ const AddUser = () => {
             />
             {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
           </div>
+
+
+          <div>
+
+<label>Image</label>
+<input
+type="file"
+accept="image/*"
+{...register("image",{required:"Image is required"})}className="w-full border p-3 rounded-xl"/>
+
+
+{errors.image &&<p className="text-red-500">{errors.image.message}</p>}
+
+</div>
 
           {/* Submit Button */}
           <div className="md:col-span-2 mt-4">

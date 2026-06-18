@@ -28,9 +28,11 @@ const tableSchema = new mongoose.Schema({
     address:{
         required:true,
         type:String
+    },
+    image:{
+        required:true,
+        type:String
     }
-    
-
 })
 
 export const Table = mongoose.model("table",tableSchema)

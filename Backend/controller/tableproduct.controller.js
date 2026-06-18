@@ -1,32 +1,58 @@
 import { TableProduct } from "../schema/tableproduct.js";
 
-export const tableproductCreate = async(req,res)=>{
-    try {
-        const {title, description, category, price, qty, review} = req.body
 
-        if(!title || !description || !category ||!price ||!qty || !review){
-            res.status(400).json({
+export const tableproductCreate = async(req,res)=>{
+
+    try {
+
+        const {title,description,category,price,qty,review} = req.body;
+
+
+
+        if(!title ||  !description ||  !category ||  !price ||  !qty || !review){
+            return res.status(400).json({
                 message:"Data Missing"
-            })
+            });
         }
-        const newData = await TableProduct.create({
-                    title,
-                    description,
-                    category,
-                    price,
-                    qty,
-                    review
-                });
-                return res.status(200).json({
-                    message:"data created successfully",
-                    data:newData
-                })
-    } catch (error) {
-        res.status(500).json({
-            message:"Server Error"
-        })
+
+        if(!req.file){
+            return res.status(400).json({
+                message:"Image Missing"
+            });
+        }
+
+
+
+        const product = await TableProduct.create({
+            title,
+            description,
+            category,
+            price,
+            qty,
+            review,
+            image:req.file.filename
+        });
+
+        return res.status(201).json({
+            message:"Product Added Successfully",
+            data:product
+        });
+
+
+    } catch(error){
+
+        console.log(error);
+
+        return res.status(500).json({
+
+            message:error.message
+
+        });
+
     }
-}
+
+};
+
 
 export const getTableProduct = async(req,res)=>{
     try {
@@ -100,3 +126,4 @@ export const deleteTableProduct = async(req,res)=>{
         
     }
 }
+

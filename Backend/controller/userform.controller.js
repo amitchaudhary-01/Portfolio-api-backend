@@ -1,10 +1,10 @@
-import { Form } from "../schema/userform.js"
+import { User } from "../schema/users.js"
 
-export const formCreate = async(req,res)=>{
+export const userformCreate = async(req,res)=>{
     try {
         const{firstname, lastname, email, contact} = req.body
 
-        const form = await Form.create({
+        const form = await User.create({
             firstname,
             lastname,
             email,

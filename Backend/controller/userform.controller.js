@@ -1,10 +1,16 @@
-import { User } from "../schema/users.js"
+import { Uform } from "../schema/form.js"
 
-export const userformCreate = async(req,res)=>{
+export const uformCreate = async(req,res)=>{
     try {
         const{firstname, lastname, email, contact} = req.body
 
-        const form = await User.create({
+        if(!firstname || !lastname || !email || !contact){
+            return res.status(400).json({
+                message:"Data Missing"
+            })
+        }
+
+        const form = await Uform.create({
             firstname,
             lastname,
             email,
@@ -20,6 +26,8 @@ export const userformCreate = async(req,res)=>{
         res.status(500).json({
             message:"Server Error"
         })
+        console.log(error);
+        
         
     }
 }

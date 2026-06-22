@@ -1,11 +1,17 @@
 import React from 'react';
 
+import { Calendar } from "@/components/ui/calendar"
+
 const About = () => {
   return (
     <div>
       {/* Heading at top center */}
       <h2 className="text-4xl font-bold text-center mt-10 mb-10">
-        About Me
+       <Calendar
+    mode="single"
+  
+    className="rounded-lg border"
+  />
       </h2>
 
       <section className="px-10 py-10 max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-10">

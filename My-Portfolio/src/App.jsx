@@ -10,7 +10,6 @@ import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Contacts from "./pages/Contacts";
 
-import Loaderscreen from "./Components/Loaderscreen";
 // import { Product } from "../../Backend/schema/product";
 import Products from "./Pages/Products";
 import Users from "./Pages/Users";
@@ -21,6 +20,7 @@ import Edit from "./Pages/Edit";
 import Product_Table from "./Pages/Product_Table";
 import AddProduct from "./Pages/AddProduct";
 import ProductEdit from "./Pages/ProductEdit";
+import Loaderscreen from "./Components/Loaderscreen";
 
 function App() {
   const [loading, setLoading] = useState(true);

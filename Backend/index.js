@@ -6,7 +6,7 @@ import path from "path"
 // Controllers
 import { getUser, userCreate, getUserbyId, updateUser, deleteUser } from "./controller/user.controller.js";
 import { getProduct, getProductById, productCreate, updateProduct } from "./controller/product.controller.js";
-import { userformCreate } from "./controller/userform.controller.js";
+import { uformCreate } from "./controller/userform.controller.js";
 import { deleteTable, getTable, getTablebyId, tableCreate, updateTable } from "./controller/table.controller.js";
 import { editCreate, getEdit, getEditbyId, updateEdit } from "./controller/edit.controller.js";
 
@@ -105,7 +105,7 @@ app.delete("/deleteuser/:id", deleteUser);
 /* ==========================================================
    FORM & TABLE ROUTES
    ========================================================== */
-app.post("/getform", userformCreate);
+app.post("/form", userCreate);
 
 app.post("/table",upload.single("image"), tableCreate);
 app.get("/gettable", getTable);
@@ -135,6 +135,9 @@ app.put("/updateedit/:id", updateEdit);
    app.put("/producttable/:id",upload.single("image"),updateTableProduct)
 
    app.delete("/producttable/:id",deleteTableProduct)
+
+
+   app.post("/uform",uformCreate)
   
 
    

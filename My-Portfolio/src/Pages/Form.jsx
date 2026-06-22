@@ -1,100 +1,62 @@
-import axios from "axios";
-import React from "react";
-import {useForm} from "react-hook-form"
-import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify";
+import axios from 'axios';
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+
+const schema = z.object({
+  firstname: z.string().min(3, "First name must be at least 3 characters").max(10, "First name cannot exceed 10 characters"),
+
+  lastname: z.string().min(2, "Last name must be at least 2 characters").max(10, "Last name cannot exceed 10 characters"),
+
+  email: z.string().email("Please enter a valid email address"),
+
+  contact: z.string().regex(/^[0-9]{10}$/, "Contact number must be exactly 10 digits"),
+});
 
 const Form = () => {
-    const {
+  const[data,setData] = useState()
+  const {
     register,
     handleSubmit,
-  } = useForm();
+    formState: { errors },
+  } = useForm({
+  resolver: zodResolver(schema),
+});
 
-const navigate = useNavigate()
-
-const onSubmit = async(data)=>{
+  const onsubmit = async(data) =>{
     try {
-        const res = await axios.post("http://localhost:2001/getform",data)
-        toast.success("Registered Successfully")
-        navigate("/")
+      
+      const res = await axios.post(" http://localhost:2001/uform",data)
+      // setData(res.data.data)
+
+      toast.success("register successfully")
+
     } catch (error) {
-        console.log(error)
-        toast.error("Invalid Criteria")  
+      console.log(error)
+      
     }
-}
-  
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center px-4">
-      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-lg">
-        <h1 className="text-3xl font-bold text-center text-green-600 mb-6">
-          Registration Form
-        </h1>
+    <div>
+      <form action="" onSubmit={handleSubmit(onsubmit)}>
+<input type="text"  {...register("firstname")} placeholder='firstname'/>
+ <p className='text-red-500'>{errors.firstname?.message}</p>
+<input type="text" {...register("lastname")} placeholder='lastname' />
+<p className='text-red-500'>{errors.lastname?.message}</p>
+<input type="text"  {...register("email")} placeholder='email'/>
+<p className='text-red-500'>{errors.email?.message}</p>
+<input type="text"  {...register("contact")} placeholder='contact'/>
+<p className='text-red-500'>{errors.contact?.message}</p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* First Name */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              First Name
-            </label>
-            <input type="text"
-              {...register('firstname')}
-              placeholder="Enter First Name"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
+<button>submit</button>
 
-          {/* Last Name */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Last Name
-            </label>
-            <input
-              type="text"
-              {...register('lastname')}
-              placeholder="Enter Last Name"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
-
-          {/* Email */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              {...register('email')}
-            
-              placeholder="Enter Email Address"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
-
-          {/* Contact */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Contact Number
-            </label>
-            <input
-              type="tel"
-              {...register("contact")}
-              placeholder="Enter Contact Number"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300 shadow-md"
-          >
-            Submit
-          </button>
-        </form>
-      </div>
+      </form>
     </div>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form

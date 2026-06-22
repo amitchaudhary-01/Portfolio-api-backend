@@ -1,4 +1,4 @@
-import { User } from "../schema/users.js";
+// import { User } from "../schema/users.js";
 import mongoose from "mongoose";
 
 export const userCreate = async(req,res)=>{

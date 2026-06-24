@@ -21,6 +21,7 @@ import Product_Table from "./Pages/Product_Table";
 import AddProduct from "./Pages/AddProduct";
 import ProductEdit from "./Pages/ProductEdit";
 import Loaderscreen from "./Components/Loaderscreen";
+import FormCard from "./Pages/FormCard";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -58,6 +59,7 @@ function App() {
             <Route path="/tableproduct" element={<Product_Table/>}/>
             <Route path="/addproduct" element={<AddProduct/>}/>
             <Route path="/productedit/:id" element={<ProductEdit/>}/>
+            <Route path="/formcard" element={<FormCard/>}/>
             {/* <Route path="/edit" element={<Edit/>}/> */}
           </Routes>
         </main>

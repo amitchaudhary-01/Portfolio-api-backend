@@ -14,7 +14,7 @@ console.log(images);
             })
         }
 
-        if(!image){
+        if(!images){
             return res.status(404).json({
                 message:"Image Missing"
             })
@@ -25,7 +25,7 @@ console.log(images);
             lastname,
             email,
             contact,
-            image
+            images
         })
         res.status(200).json({
             message:"Form Data Created Successfully",
@@ -39,6 +39,22 @@ console.log(images);
         })
         console.log(error);
         
+        
+    }
+}
+
+export const getForm = async(req,res)=>{
+    try {
+        const formData = await Uform.find()
+         
+        res.status(200).json({
+            message:"Get Form data Successfully",
+            data:formData
+        })
+    } catch (error) {
+        res.status(500).json({
+            message:"Server Error"
+        })
         
     }
 }

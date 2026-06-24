@@ -6,7 +6,7 @@ import path from "path"
 // Controllers
 import { getUser, userCreate, getUserbyId, updateUser, deleteUser } from "./controller/user.controller.js";
 import { getProduct, getProductById, productCreate, updateProduct } from "./controller/product.controller.js";
-import { uformCreate } from "./controller/userform.controller.js";
+import { getForm, uformCreate } from "./controller/userform.controller.js";
 import { deleteTable, getTable, getTablebyId, tableCreate, updateTable } from "./controller/table.controller.js";
 import { editCreate, getEdit, getEditbyId, updateEdit } from "./controller/edit.controller.js";
 
@@ -138,6 +138,8 @@ app.put("/updateedit/:id", updateEdit);
 
 
    app.post("/uform",upload.array("images", 5),uformCreate)
+
+   app.get("/getform",getForm)
   
 
    

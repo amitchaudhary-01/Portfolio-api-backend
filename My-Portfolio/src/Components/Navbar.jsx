@@ -40,6 +40,7 @@ const Navbar = () => {
             <Link to="/tableproduct">TableProduct</Link>
             <Link to="/addproduct">Add Product</Link>
             <Link to="/productedit">Product Edit</Link>
+            <Link to="/formcard">Form Card</Link>
         </div>
         </nav>
   )

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useNavigate } from 'react-router-dom';
 
 
 const schema = z.object({
@@ -17,8 +18,11 @@ const schema = z.object({
    images: z
   .any()
   .refine(
+    (files) => files?.length > 0,
+    "Please select at least one image"
+  )
+  .refine(
     (files) =>
-      !files ||
       Array.from(files).every(
         (file) => file.size <= 2 * 1024 * 1024
       ),
@@ -26,7 +30,6 @@ const schema = z.object({
   )
   .refine(
     (files) =>
-      !files ||
       Array.from(files).every((file) =>
         ["image/jpeg", "image/png"].includes(file.type)
       ),
@@ -44,6 +47,8 @@ const Form = () => {
   } = useForm({
   resolver: zodResolver(schema),
 });
+ const navigate = useNavigate();
+
 
   const onsubmit = async(data) =>{
     try {
@@ -54,31 +59,28 @@ formdata.append("firstname",data.firstname)
 formdata.append("lastname",data.lastname)
 formdata.append("email",data.email)
 formdata.append("contact",data.contact)
-data.images.forEach((file) => {
+Array.from(data.images).forEach((file) => {
   formdata.append("images", file);
 });
 
 
-
-      const res = await axios.post(" http://localhost:2001/uform",formdata
-      )
+      const res = await axios.post("http://localhost:2001/uform",formdata)
       // setData(res.data.data)
-
       toast.success("register successfully")
 
+      navigate("/formcard")
+
     } catch (error) {
-      console.log(error)
-      
-    }
+  console.log(error.response?.data);
+  console.log(error);
+  toast.error(error.response?.data?.message || "Something went wrong");
+}
   }
 
  return (
   <div className="min-h-screen bg-gradient-to-r from-blue-100 to-indigo-200 flex items-center justify-center p-4">
     <form
-      onSubmit={handleSubmit(onsubmit)}
-      encType="multipart/form-data"
-      className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md space-y-4"
-    >
+      onSubmit={handleSubmit(onsubmit)} encType="multipart/form-data" className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md space-y-4">
       <h2 className="text-3xl font-bold text-center text-indigo-600 mb-6">
         Registration Form
       </h2>
@@ -149,19 +151,10 @@ data.images.forEach((file) => {
 
       {/* Image Upload */}
       <div>
-  <label className="block mb-1 font-medium text-gray-700">
-    Upload Images
-  </label>
+  <label className="block mb-1 font-medium text-gray-700">Upload Images</label>
 
-  <input
-    type="file"
-    multiple
-    {...register("images")}
-    className="w-full border border-gray-300 rounded-lg p-2
-    file:bg-indigo-500 file:text-white
-    file:border-0 file:px-4 file:py-2
-    file:rounded-md file:cursor-pointer"
-  />
+  <input type="file"multiple {...register("images")}className="w-full border border-gray-300 rounded-lg p-2 file:bg-indigo-500 file:text-white file:border-0 file:px-4 file:py-2
+    file:rounded-md file:cursor-pointer"/>
 
   <p className="text-red-500 text-sm mt-1">
     {errors.images?.message}
@@ -169,12 +162,7 @@ data.images.forEach((file) => {
 </div>
 
       {/* Submit Button */}
-      <button
-        type="submit"
-        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300 shadow-md hover:shadow-lg"
-      >
-        Submit
-      </button>
+      <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300 shadow-md hover:shadow-lg">Submit</button>
     </form>
   </div>
 );

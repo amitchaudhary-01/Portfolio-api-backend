@@ -17,9 +17,9 @@ const uformSchema = new mongoose.Schema({
         required:true,
         type:String
     },
-    image:{
+    images:{
         required:true,
-        type:String
+        type:[String]
     }
     
     

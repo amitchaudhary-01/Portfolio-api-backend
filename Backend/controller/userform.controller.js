@@ -4,9 +4,19 @@ export const uformCreate = async(req,res)=>{
     try {
         const{firstname, lastname, email, contact} = req.body
 
+         const images = req.files.map((file) => file.filename);
+
+console.log(images);
+
         if(!firstname || !lastname || !email || !contact){
             return res.status(400).json({
                 message:"Data Missing"
+            })
+        }
+
+        if(!image){
+            return res.status(404).json({
+                message:"Image Missing"
             })
         }
 
@@ -14,7 +24,8 @@ export const uformCreate = async(req,res)=>{
             firstname,
             lastname,
             email,
-            contact
+            contact,
+            image
         })
         res.status(200).json({
             message:"Form Data Created Successfully",

@@ -14,6 +14,25 @@ const schema = z.object({
   email: z.string().email("Please enter a valid email address"),
 
   contact: z.string().regex(/^[0-9]{10}$/, "Contact number must be exactly 10 digits"),
+   images: z
+  .any()
+  .refine(
+    (files) =>
+      !files ||
+      Array.from(files).every(
+        (file) => file.size <= 2 * 1024 * 1024
+      ),
+    "Each file must be less than 2MB"
+  )
+  .refine(
+    (files) =>
+      !files ||
+      Array.from(files).every((file) =>
+        ["image/jpeg", "image/png"].includes(file.type)
+      ),
+    "Only JPG and PNG files are allowed"
+  ),
+    
 });
 
 const Form = () => {
@@ -29,7 +48,20 @@ const Form = () => {
   const onsubmit = async(data) =>{
     try {
       
-      const res = await axios.post(" http://localhost:2001/uform",data)
+const formdata = new FormData()
+
+formdata.append("firstname",data.firstname)
+formdata.append("lastname",data.lastname)
+formdata.append("email",data.email)
+formdata.append("contact",data.contact)
+data.images.forEach((file) => {
+  formdata.append("images", file);
+});
+
+
+
+      const res = await axios.post(" http://localhost:2001/uform",formdata
+      )
       // setData(res.data.data)
 
       toast.success("register successfully")
@@ -40,23 +72,112 @@ const Form = () => {
     }
   }
 
-  return (
-    <div>
-      <form action="" onSubmit={handleSubmit(onsubmit)}>
-<input type="text"  {...register("firstname")} placeholder='firstname'/>
- <p className='text-red-500'>{errors.firstname?.message}</p>
-<input type="text" {...register("lastname")} placeholder='lastname' />
-<p className='text-red-500'>{errors.lastname?.message}</p>
-<input type="text"  {...register("email")} placeholder='email'/>
-<p className='text-red-500'>{errors.email?.message}</p>
-<input type="text"  {...register("contact")} placeholder='contact'/>
-<p className='text-red-500'>{errors.contact?.message}</p>
+ return (
+  <div className="min-h-screen bg-gradient-to-r from-blue-100 to-indigo-200 flex items-center justify-center p-4">
+    <form
+      onSubmit={handleSubmit(onsubmit)}
+      encType="multipart/form-data"
+      className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md space-y-4"
+    >
+      <h2 className="text-3xl font-bold text-center text-indigo-600 mb-6">
+        Registration Form
+      </h2>
 
-<button>submit</button>
+      {/* First Name */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">
+          First Name
+        </label>
+        <input
+          type="text"
+          {...register("firstname")}
+          placeholder="Enter first name"
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+        />
+        <p className="text-red-500 text-sm mt-1">
+          {errors.firstname?.message}
+        </p>
+      </div>
 
-      </form>
-    </div>
-  )
+      {/* Last Name */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">
+          Last Name
+        </label>
+        <input
+          type="text"
+          {...register("lastname")}
+          placeholder="Enter last name"
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+        />
+        <p className="text-red-500 text-sm mt-1">
+          {errors.lastname?.message}
+        </p>
+      </div>
+
+      {/* Email */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">
+          Email
+        </label>
+        <input
+          type="email"
+          {...register("email")}
+          placeholder="Enter email"
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+        />
+        <p className="text-red-500 text-sm mt-1">
+          {errors.email?.message}
+        </p>
+      </div>
+
+      {/* Contact */}
+      <div>
+        <label className="block mb-1 font-medium text-gray-700">
+          Contact Number
+        </label>
+        <input
+          type="text"
+          {...register("contact")}
+          placeholder="98XXXXXXXX"
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+        />
+        <p className="text-red-500 text-sm mt-1">
+          {errors.contact?.message}
+        </p>
+      </div>
+
+      {/* Image Upload */}
+      <div>
+  <label className="block mb-1 font-medium text-gray-700">
+    Upload Images
+  </label>
+
+  <input
+    type="file"
+    multiple
+    {...register("images")}
+    className="w-full border border-gray-300 rounded-lg p-2
+    file:bg-indigo-500 file:text-white
+    file:border-0 file:px-4 file:py-2
+    file:rounded-md file:cursor-pointer"
+  />
+
+  <p className="text-red-500 text-sm mt-1">
+    {errors.images?.message}
+  </p>
+</div>
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300 shadow-md hover:shadow-lg"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+);
 }
 
 export default Form

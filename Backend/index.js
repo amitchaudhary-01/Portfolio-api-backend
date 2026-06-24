@@ -105,7 +105,7 @@ app.delete("/deleteuser/:id", deleteUser);
 /* ==========================================================
    FORM & TABLE ROUTES
    ========================================================== */
-app.post("/form", userCreate);
+// app.post("/form", uformCreate);
 
 app.post("/table",upload.single("image"), tableCreate);
 app.get("/gettable", getTable);
@@ -137,7 +137,7 @@ app.put("/updateedit/:id", updateEdit);
    app.delete("/producttable/:id",deleteTableProduct)
 
 
-   app.post("/uform",uformCreate)
+   app.post("/uform",upload.array("images", 5),uformCreate)
   
 
    

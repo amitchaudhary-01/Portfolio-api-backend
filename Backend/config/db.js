@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 
 const dbConnect = async()=>{
     try {
-       await mongoose.connect("mongodb://localhost:27017/test")
+       await mongoose.connect(`${process.env.DBURL}`)
        console.log("database connected")
     } catch (error)  
     {

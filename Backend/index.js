@@ -2,12 +2,13 @@ import express from "express";
 import cors from "cors";
 import dbConnect from "./config/db.js";
 import path from "path"
-
+import dotenv from "dotenv"
+import TableRouter from "./routes/table.routes.js";
 // Controllers
 import { getUser, userCreate, getUserbyId, updateUser, deleteUser } from "./controller/user.controller.js";
 import { getProduct, getProductById, productCreate, updateProduct } from "./controller/product.controller.js";
 import { getForm, uformCreate } from "./controller/userform.controller.js";
-import { deleteTable, getTable, getTablebyId, tableCreate, updateTable } from "./controller/table.controller.js";
+import { deleteTable, getTable, getTablebyId,  updateTable } from "./controller/table.controller.js";
 import { editCreate, getEdit, getEditbyId, updateEdit } from "./controller/edit.controller.js";
 
 // Test schema (if needed directly here)
@@ -20,6 +21,8 @@ import { deleteTableProduct, getTableProduct, getTableProductbyId, tableproductC
 import { upload } from "./middlerware/multer.js";
 
 const app = express();
+
+dotenv.config()
 
 // Middleware
 app.use(
@@ -107,11 +110,12 @@ app.delete("/deleteuser/:id", deleteUser);
    ========================================================== */
 // app.post("/form", uformCreate);
 
-app.post("/table",upload.single("image"), tableCreate);
-app.get("/gettable", getTable);
-app.get("/gettable/:id", getTablebyId);
-app.put("/updatetable/:id",upload.single("image"), updateTable);
-app.delete("/deletetable/:id", deleteTable);
+app.use("/api/v1/table",TableRouter)
+
+// app.use("/api/v1/gettable", getTable);
+// app.get("/gettable/:id", getTablebyId);
+// app.put("/updatetable/:id",upload.single("image"), updateTable);
+// app.delete("/deletetable/:id", deleteTable);
 
 /* ==========================================================
    EDIT ROUTES
@@ -136,7 +140,7 @@ app.put("/updateedit/:id", updateEdit);
 
    app.delete("/producttable/:id",deleteTableProduct)
 
-
+/////////////form user/////////
    app.post("/uform",upload.array("images", 5),uformCreate)
 
    app.get("/getform",getForm)

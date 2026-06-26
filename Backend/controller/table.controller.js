@@ -17,7 +17,7 @@ export const tableCreate = async(req,res)=>{
 if (!image)
 {
      return res.status(404).json({
-                message:"Data are missing"
+                message:"Image are missing"
             })
 }
 

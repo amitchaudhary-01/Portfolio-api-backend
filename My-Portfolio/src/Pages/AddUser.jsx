@@ -29,9 +29,7 @@ formData.append("address",data.address)
 if(data.image && data.image.length > 0){
   formData.append("image", data.image[0]);
 }
-
-
-await axios.post("http://localhost:2001/table",
+await axios.post("http://localhost:2001/api/v1/table/table",
  formData,
  {
   headers:{
@@ -41,10 +39,7 @@ await axios.post("http://localhost:2001/table",
 );
 
 
-
-
-
-      await axios.post("http://localhost:2001/table", data);
+      // await axios.post("http://localhost:2001/table", data);
       toast.success("Registered Successfully");
       navigate("/table");
     }

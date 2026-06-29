@@ -4,7 +4,7 @@ import { upload } from '../middlerware/multer.js'
 
 const router = express.Router()
 
-router.post("/uform",upload.array("images", 5),uformCreate)
+router.post("/create",upload.array("images", 5),uformCreate)
 
 router.get("/getform",getForm)
 

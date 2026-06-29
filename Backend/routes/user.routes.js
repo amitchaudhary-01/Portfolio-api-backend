@@ -3,7 +3,7 @@ import { deleteUser, getUser, getUserbyId, updateUser, userCreate } from '../con
 
  const router =express.Router()
 
-router.post("/user",userCreate)
+router.post("/create",userCreate)
 
 router.get("/getusers", getUser);
 

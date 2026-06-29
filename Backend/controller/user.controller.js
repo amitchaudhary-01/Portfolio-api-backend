@@ -1,11 +1,44 @@
-// import { User } from "../schema/users.js";
+import { Users } from "../schema/users.js";
 import mongoose from "mongoose";
+import bcrypt from 'bcrypt'
 
 export const userCreate = async(req,res)=>{
     try {
         const{firstname,lastname, contact, email, age, gender, username, password, bloodgroup, height, weight, address } = req.body 
 
-     const user= await User.create({
+        if(!firstname || !lastname || !contact || !email || !age || !gender || !username || !password || !bloodgroup || !height || !weight || !address){
+            return res.status(400).json({
+                message:"User Data Missing"
+            })
+        } 
+        const exist = await Users.findOne({$or:[{contact},
+            {email},
+            {username}
+        ]})
+
+if(exist){
+    if(exist.contact===contact){
+        return res.status(400).json({
+            message:"contact already exist"
+        })
+    }
+    if(exist.email === email){
+        return res.status(400).json({
+            message:"Email already exist"
+        })
+    }
+    if(exist.username === username){
+        return res.status(400).json({
+            message:"Username Already Exist"
+        })
+    }
+}
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync("B4c0/\/", salt);
+
+
+
+     const data = await Users.create({
     firstname,
     lastname,
     contact,
@@ -13,7 +46,7 @@ export const userCreate = async(req,res)=>{
     age,
     gender,
     username,
-    password,
+    password:hash,
     bloodgroup,
     height,
     weight,
@@ -21,17 +54,14 @@ export const userCreate = async(req,res)=>{
   })
   res.status(200).json({
     message:"user created sucessfully",
-    data:user
+    data:data
   })
         
     } catch (error) {
         res.status(500).json({
             message:"server crash vayo"
-        })
-        
-        
+        })   
     }
-
 }
 
 

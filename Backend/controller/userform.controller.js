@@ -1,4 +1,5 @@
 import { Uform } from "../schema/form.js"
+import bcrypt from 'bcrypt'
 
 export const uformCreate = async(req,res)=>{
     try {
@@ -19,6 +20,21 @@ console.log(images);
                 message:"Image Missing"
             })
         }
+
+        const Email = await Uform.findOne({$or:[{email:email},
+            {contact:contact}
+        ]})
+
+        if(Email){
+            return res.status(400).json({
+                message:"Email or Contact Already exists"
+            })
+        }
+
+
+const salt = bcrypt.genSaltSync(10);
+const hash = bcrypt.hashSync("B4c0/\/", salt);
+
 
         const form = await Uform.create({
             firstname,

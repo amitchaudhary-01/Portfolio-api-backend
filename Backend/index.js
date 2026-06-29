@@ -151,7 +151,7 @@ app.put("/updateedit/:id", updateEdit);
   //  app.delete("/producttable/:id",deleteTableProduct)
 
 /////////////form user/////////
-   app.use("/api/v1/uform",upload.array("images", 5),RegisterForm)
+   app.use("/api/v1/uform",RegisterForm)
 
   //  app.get("/getform",getForm)
   

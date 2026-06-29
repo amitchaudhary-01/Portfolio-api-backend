@@ -11,7 +11,7 @@ const Product_Table = () => {
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:2001/producttable"
+        "http://localhost:2001/api/v1/producttable/producttable"
       );
 
       console.log(res.data);
@@ -35,7 +35,7 @@ const Product_Table = () => {
     try {
 
       await axios.delete(
-        `http://localhost:2001/producttable/${id}`
+        `http://localhost:2001/api/v1/producttable/producttable/${id}`
       );
 
       toast.success("Deleted successfully");

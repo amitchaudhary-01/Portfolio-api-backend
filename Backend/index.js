@@ -4,6 +4,9 @@ import dbConnect from "./config/db.js";
 import path from "path"
 import dotenv from "dotenv"
 import TableRouter from "./routes/table.routes.js";
+import UserRouter from "./routes/user.routes.js"
+import ProductTable from "./routes/producttable.routes.js"
+import RegisterForm from "./routes/form.routes.js"
 // Controllers
 import { getUser, userCreate, getUserbyId, updateUser, deleteUser } from "./controller/user.controller.js";
 import { getProduct, getProductById, productCreate, updateProduct } from "./controller/product.controller.js";
@@ -19,6 +22,9 @@ import { deleteTableProduct, getTableProduct, getTableProductbyId, tableproductC
 
 /////multer middleware/////////////
 import { upload } from "./middlerware/multer.js";
+
+
+import { authCreate } from "./controller/auth.controller.js";
 
 const app = express();
 
@@ -98,12 +104,16 @@ app.put("/productupdate/:id", updateProduct);
 /* ==========================================================
    USER MANAGEMENT ROUTES
    ========================================================== */
-app.get("/getusers", getUser);
-app.get("/getuser/:id", getUserbyId);
+
+app.use("/api/v1/user",UserRouter)
+
+  //  app.get("/getusers", getUser);
+
+// app.get("/getuser/:id", getUserbyId);
 // FIXED: Changed from .get to .put for resource update
-app.put("/userupdate/:id", updateUser);
+// app.put("/userupdate/:id", updateUser);
 // FIXED: Changed from .get to .delete for cleaner semantics
-app.delete("/deleteuser/:id", deleteUser);
+// app.delete("/deleteuser/:id", deleteUser);
 
 /* ==========================================================
    FORM & TABLE ROUTES
@@ -130,21 +140,24 @@ app.put("/updateedit/:id", updateEdit);
 /* ==========================================================
    tableproduct ROUTES
    ========================================================== */
-   app.post("/producttable",upload.single("image"),tableproductCreate)
+   app.use("/api/v1/producttable",upload.single("image"),ProductTable)
 
-   app.get("/producttable",getTableProduct)
+  //  app.get("/producttable",getTableProduct)
 
-   app.get("/producttable/:id",getTableProductbyId)
+  //  app.get("/producttable/:id",getTableProductbyId)
 
-   app.put("/producttable/:id",upload.single("image"),updateTableProduct)
+  //  app.put("/producttable/:id",upload.single("image"),updateTableProduct)
 
-   app.delete("/producttable/:id",deleteTableProduct)
+  //  app.delete("/producttable/:id",deleteTableProduct)
 
 /////////////form user/////////
-   app.post("/uform",upload.array("images", 5),uformCreate)
+   app.use("/api/v1/uform",upload.array("images", 5),RegisterForm)
 
-   app.get("/getform",getForm)
+  //  app.get("/getform",getForm)
   
+
+  ////////////////auth/////
+  app.use("/api/v1/auth",authCreate)
 
    
 // Run Server

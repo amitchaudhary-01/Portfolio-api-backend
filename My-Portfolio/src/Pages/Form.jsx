@@ -64,7 +64,7 @@ Array.from(data.images).forEach((file) => {
 });
 
 
-      const res = await axios.post("http://localhost:2001/uform",formdata)
+      const res = await axios.post("http://localhost:2001/api/v1/uform/uform",formdata)
       // setData(res.data.data)
       toast.success("register successfully")
 

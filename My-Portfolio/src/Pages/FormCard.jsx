@@ -6,7 +6,7 @@ const FormCard = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get("http://localhost:2001/getform");
+      const res = await axios.get("http://localhost:2001/api/v1/uform/getform");
 
       console.log("API Response:", res.data);
 

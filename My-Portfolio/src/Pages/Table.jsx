@@ -14,7 +14,7 @@ const Table = () => {
 
   const fetchData = async () => {
   try {
-    const res = await axios.get("http://localhost:2001/gettable");
+    const res = await axios.get("http://localhost:2001/api/v1/table/gettable");
 
     console.log("API Response:", res.data);
 

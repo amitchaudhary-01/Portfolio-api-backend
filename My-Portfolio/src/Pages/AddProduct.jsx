@@ -32,7 +32,7 @@ if(data.image && data.image.length > 0){
 }
 
 
-await axios.post("http://localhost:2001/producttable",
+await axios.post("http://localhost:2001/api/v1/table/producttable",
  formData,
  {
   headers:{

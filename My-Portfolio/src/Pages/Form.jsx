@@ -56,7 +56,7 @@ const Form = () => {
         });
       }
 
-      await axios.post("http://localhost:2001/api/v1/uform/uform", formdata, {
+      await axios.post("http://localhost:2001/api/v1/uform/create", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -5,14 +5,11 @@ export const authCreate = async(req,res)=>{
     try {
         const{name, password, email, contact} = req.body
 
-
-
         if(!name || !password || !email || !contact){
             return res.status(400).json({
                 message:"Data Missing"
             })
         }
-
 
         const existingUser = await Auth.findOne({
     $or: [
@@ -20,7 +17,6 @@ export const authCreate = async(req,res)=>{
         { contact: contact }
     ]
 });
-
 
 if (existingUser) {
     if (existingUser.contact === contact) {
@@ -31,10 +27,8 @@ if (existingUser) {
     }
 }
 
-
-
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync("B4c0/\/", salt);
+       const salt = await bcrypt.genSalt(10);
+const hash = await bcrypt.hash(password, salt);
 
         const data = await Auth.create({
             name,
@@ -56,3 +50,67 @@ if (existingUser) {
     }
 }
 
+
+
+//login 
+
+
+export const login = async (req,res)=>{
+    try {
+
+      const {email, password} = req.body
+
+      if(!email || !password){
+        return res.status(400).json({
+            message:"Email and Password missing"
+        })
+      }
+
+      const user = await Auth.findOne({email})
+
+      if(!user){
+        return res.status(404).json({
+            message:"User Doesn't Regsitered"
+        })
+      }
+
+
+      // check password 
+
+
+      const checkpw = await bcrypt.compare(password,user.password)
+
+
+
+
+      if(!checkpw){
+        return res.status(404).json({
+            message:" credentials not match || email or passowrd not match"
+        })
+      }else{
+        return res.status(200).json({
+            message:"login success fully"
+        })
+
+      }
+
+
+      
+
+     
+
+
+
+
+
+
+
+    } catch (error) {
+         res.status(500).json({
+            message:"Server Error"
+        })
+        console.log(error);
+
+        
+    }
+}

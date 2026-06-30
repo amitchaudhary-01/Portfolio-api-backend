@@ -7,6 +7,8 @@ import TableRouter from "./routes/table.routes.js";
 import UserRouter from "./routes/user.routes.js"
 import ProductTable from "./routes/producttable.routes.js"
 import RegisterForm from "./routes/form.routes.js"
+
+import Auth from "./routes/auth.route.js"
 // Controllers
 import { getUser, userCreate, getUserbyId, updateUser, deleteUser } from "./controller/user.controller.js";
 import { getProduct, getProductById, productCreate, updateProduct } from "./controller/product.controller.js";
@@ -24,7 +26,7 @@ import { deleteTableProduct, getTableProduct, getTableProductbyId, tableproductC
 import { upload } from "./middlerware/multer.js";
 
 
-import { authCreate } from "./controller/auth.controller.js";
+
 
 const app = express();
 
@@ -157,7 +159,7 @@ app.put("/updateedit/:id", updateEdit);
   
 
   ////////////////auth/////
-  app.use("/api/v1/auth",authCreate)
+  app.use("/api/v1/auth",Auth)
 
    
 // Run Server

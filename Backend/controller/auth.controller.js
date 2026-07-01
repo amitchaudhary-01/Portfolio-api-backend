@@ -1,6 +1,6 @@
 import { Auth } from "../schema/auth.schema.js";
 import bcrypt from 'bcrypt'
-
+import jwt from 'jsonwebtoken'
 export const authCreate = async(req,res)=>{
     try {
         const{name, password, email, contact} = req.body
@@ -55,62 +55,53 @@ const hash = await bcrypt.hash(password, salt);
 //login 
 
 
-export const login = async (req,res)=>{
+export const login = async (req, res) => {
     try {
+        const { email, password } = req.body;
 
-      const {email, password} = req.body
+        if (!email || !password) {
+            return res.status(400).json({
+                message: "Email and Password missing"
+            });
+        }
 
-      if(!email || !password){
-        return res.status(400).json({
-            message:"Email and Password missing"
+        const user = await Auth.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User doesn't exist"
+            });
+        }
+
+        const checkpw = await bcrypt.compare(password, user.password);
+
+        if (!checkpw) {
+            return res.status(401).json({
+                message: "Email or password is incorrect"
+            });
+        }
+
+        const token = jwt.sign({id : user._id}, process.env.JWT_SECRET, { expiresIn: '1h' })
+        
+        res.cookie("user",token,{
+            httpOnly:true,
+            maxAge: 24 * 60 * 60 * 1000
         })
-      }
-
-      const user = await Auth.findOne({email})
-
-      if(!user){
-        return res.status(404).json({
-            message:"User Doesn't Regsitered"
-        })
-      }
-
-
-      // check password 
-
-
-      const checkpw = await bcrypt.compare(password,user.password)
-
-
-
-
-      if(!checkpw){
-        return res.status(404).json({
-            message:" credentials not match || email or passowrd not match"
-        })
-      }else{
         return res.status(200).json({
-            message:"login success fully"
+            message:"User Logged In Successfully",
+            data : user.name
         })
-
-      }
-
-
-      
-
-     
-
-
-
-
-
-
 
     } catch (error) {
-         res.status(500).json({
-            message:"Server Error"
-        })
         console.log(error);
 
-        
+        return res.status(500).json({
+            message: "Server Error"
+        });
     }
-}
+};
+
+
+
+
+

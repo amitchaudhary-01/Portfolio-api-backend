@@ -102,6 +102,45 @@ export const login = async (req, res) => {
 };
 
 
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("user", {
+      httpOnly: true,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+
+export const me = async (req, res) => {
+  try {
+    return res.status(200).json({
+      success: true,
+      message: "User fetched successfully",
+      user: req.user,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+
 
 
 

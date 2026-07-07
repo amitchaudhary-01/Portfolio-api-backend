@@ -24,6 +24,7 @@ import { deleteTableProduct, getTableProduct, getTableProductbyId, tableproductC
 
 /////multer middleware/////////////
 import { upload } from "./middlerware/multer.js";
+import cookieParser from "cookie-parser";
 
 
 
@@ -39,6 +40,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
 
 
